@@ -5,6 +5,7 @@
   "repository": "https://github.com/OzkanOnay/WP5ModuleFederationPractices.git",
   "author": "Özkan Onay <ozkanonay@gmail.com>",
   "license": "MIT",
+  "private": true,
   "scripts": {
     "start": "concurrently \"wsrun --parallel start\""
   },
