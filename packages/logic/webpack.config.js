@@ -4,7 +4,7 @@ const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPl
 const deps = require("./package.json").dependencies;
 module.exports = {
   output: {
-    publicPath: "http://localhost:8080/",
+    publicPath: "http://localhost:3002/",
   },
 
   resolve: {
@@ -12,7 +12,7 @@ module.exports = {
   },
 
   devServer: {
-    port: 8080,
+    port: 3002,
   },
 
   module: {
@@ -40,23 +40,13 @@ module.exports = {
 
   plugins: [
     new ModuleFederationPlugin({
-      name: "home",
+      name: "logic",
       filename: "remoteEntry.js",
-      remotes: {
-        nav: "nav@http://localhost:3001/remoteEntry.js",
-        logic: "logic@http://localhost:3002/remoteEntry.js",
+      remotes: {},
+      exposes: {
+        "./singleValue": "./src/singleValue" 
       },
-      exposes: {},
-      shared: {
-        ...deps,
-        react: {
-          singleton: true,
-          requiredVersion: deps.react,
-        },
-        "react-dom": {
-          singleton: true,
-          requiredVersion: deps["react-dom"],
-        },
+      shared: {       
       },
     }),
     new HtmlWebPackPlugin({

@@ -10,6 +10,18 @@ const wrapComponent = (Component) => ({error, delayed, ...props}) => (
 
 const Header = wrapComponent(React.lazy(() => import("nav/Header")));
 
+const SingleValue = () => {
+    const [singleValue, singleValueSet] = React.useState(null);
+
+    React.useEffect(() => {
+        import("logic/singleValue")
+            .then(({default : value}) => singleValueSet(value))
+            .catch((err) => console.error(`Error getting single value: ${err}`));
+    }, []);
+
+    return <div>Single value: {singleValue}</div>
+}
+
 import "./index.css";
 
 const App = () => {
@@ -24,6 +36,7 @@ const App = () => {
             <div>Hi there, I'm React from Webpack 5.</div>
             <button onClick={onAddToCart}>Buy me</button>
             <div>Cart count is {itemCount}</div>
+            <SingleValue></SingleValue>
         </div>
     );
 };
