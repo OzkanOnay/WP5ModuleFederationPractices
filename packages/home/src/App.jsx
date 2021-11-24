@@ -22,6 +22,72 @@ const SingleValue = () => {
     return <div>Single value: {singleValue}</div>
 }
 
+
+
+
+// const analyticsFunc = import("logic/analyticsFunc");
+// const sendAnalytics = (msg) => {
+//   analyticsFunc
+//     .then(({ default: analyticsFunc }) => analyticsFunc(msg))
+//     .catch((err) => console.log(`Error sending analytics value: ${msg}`));
+// };
+
+// const createAsyncFunc = (promise) => (...args) =>
+//   promise
+//     .then(({ default: func }) => func(...args))
+//     .catch((err) =>
+//       console.log(`Error sending analytics value: ${JSON.stringify(args)}`)
+//     );
+
+// const sendAnalytics = createAsyncFunc(import("logic/analyticsFunc"));
+
+const queuedFunction = (funcPromise) => {
+    let queueFunc = null;
+    let queue = [];
+    let pending = false;
+  
+    return (msg) => {
+      if (queueFunc) {
+        queueFunc(msg);
+      } else {
+        queue.push(msg);
+  
+        if (!pending) {
+          pending = true;
+          funcPromise
+            .then((func) => {
+              queueFunc = func;
+              queue.forEach(queueFunc);
+              queue = [];
+            })
+            .catch((err) => console.log(`Error getting queued function ${err}`));
+        }
+      }
+    };
+  };
+  
+  const sendAnalytics = queuedFunction(
+    import("logic/analyticsFunc").then(({ default: func }) => func)
+  );
+
+sendAnalytics("Application startup");
+
+
+const classExport = import("logic/classExport");
+const newClassObject = (...args) => 
+    classExport
+        .then( ({default: classRef}) => {
+            return new classRef(...args);
+        })
+        .catch( (err) => console.log(`Error getting class: ${err}`));
+
+newClassObject("initial value").then(
+    (theObject) => {
+        theObject.logString();
+    }
+);
+
+
 import "./index.css";
 
 const App = () => {

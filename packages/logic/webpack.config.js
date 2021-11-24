@@ -44,7 +44,11 @@ module.exports = {
       filename: "remoteEntry.js",
       remotes: {},
       exposes: {
-        "./singleValue": "./src/singleValue" 
+        "./analyticsFunc": "./src/analyticsFunc",
+        "./arrayValue": "./src/arrayValue",
+        "./classExport": "./src/classExport",
+        "./objectValue": "./src/objectValue",
+        "./singleValue": "./src/singleValue",
       },
       shared: {       
       },

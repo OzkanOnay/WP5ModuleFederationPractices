@@ -1,1 +1,1 @@
-import("./singleValue");
+export default () => true;
